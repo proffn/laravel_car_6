@@ -1,0 +1,272 @@
+// Переменные цветов Bootstrap
+$primary: #274c77;
+$secondary: #a3cef1;
+$light: #e7ecef;
+$dark: #2c3e50;
+$gray-600: #8b8c89;
+
+// Брейкпоинты 
+$grid-breakpoints: (
+    xs: 0, 
+    sm: 576px, 
+    md: 768px, 
+    lg: 992px, 
+    xl: 1200px, 
+    xxl: 1400px, 
+    xxxl: 1500px
+);
+
+$container-max-widths: (
+    sm: 540px, 
+    md: 720px, 
+    lg: 960px, 
+    xl: 1140px, 
+    xxl: 1320px, 
+    xxxl: 1600px
+);
+
+// Импорт Bootstrap с новым синтаксисом @use
+@use "bootstrap/scss/bootstrap" with (
+    $primary: $primary,
+    $secondary: $secondary,
+    $light: $light,
+    $dark: $dark,
+    $gray-600: $gray-600,
+    $grid-breakpoints: $grid-breakpoints,
+    $container-max-widths: $container-max-widths
+);
+
+// Миксины
+@mixin card-shadow {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+@mixin card-hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+// Стили
+.car-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    @include card-shadow;
+
+    img {
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+    }
+
+    .card-text {
+        font-size: 0.95rem;
+    }
+
+    &:hover {
+        @include card-hover;
+    }
+}
+
+// карточки на широких экранах
+@media (min-width: 1500px) {
+    .car-card {
+        .card-title {
+            font-size: 1.4rem;
+        }
+        
+        .card-text {
+            font-size: 1.05rem;
+        }
+        
+        img {
+            height: 300px;
+        }
+    }
+}
+
+.row.g-4.justify-content-center {
+    // Для xxxl экранов
+    @media (min-width: 1500px) {
+        & > .col-xxxl-3 {
+            flex: 0 0 auto;
+            width: 20%;
+            max-width: 20%;
+        }
+    }
+    
+    // Для xxl экранов  
+    @media (min-width: 1400px) and (max-width: 1499px) {
+        & > .col-xxl-3 {
+            flex: 0 0 auto;
+            width: 23%;
+            max-width: 23%;
+        }
+    }
+}
+
+// Кастомный контейнер для очень широких экранов
+.container {
+    @media (min-width: 1600px) {
+        max-width: 1600px;
+    }
+}
+
+.modal-content {
+    border: none;
+    border-radius: 1rem;
+    position: relative;
+}
+
+.modal-body {
+    line-height: 1.6;
+    position: relative;
+    padding: 2rem 4rem;
+
+    .modal-text-content {
+        margin: 0;
+        padding: 0;
+    }
+
+    .arrow-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        border: 2px solid $primary;
+        background: white;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        
+        &:hover {
+            transform: translateY(-50%) scale(1.1);
+            background-color: $primary;
+            color: white;
+        }
+        
+        &:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        &:focus {
+            box-shadow: 0 0 0 0.25rem rgba($primary, 0.5);
+        }
+    }
+
+    .arrow-prev {
+        left: 1rem;
+    }
+
+    .arrow-next {
+        right: 1rem;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@for $i from 1 through 10 {
+    .car-card:nth-child(10n + #{$i}) {
+        $percentage: ($i - 1) * 11.11%;
+        $current-bg: mix(white, #a5dafb, $percentage);
+        background: linear-gradient(135deg, $current-bg 0%, lighten($current-bg, 5%) 100%);
+    }
+}
+
+.navbar-brand span {
+    font-family: "Play", sans-serif;
+}
+
+.display-4 {
+    font-family: "Play", sans-serif;
+    font-weight: 300;
+}
+
+body {
+    background-color: $light;
+    font-family: "Play", sans-serif;
+}
+
+// Базовые стили контейнера
+.container {
+    max-width: 1140px;
+    padding: 0 15px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+// Стили для футера
+footer {
+    padding: 30px 0;
+    margin-top: 50px;
+
+    .footer__title {
+        margin-bottom: 20px;
+        color: $dark;
+
+        p {
+            font-size: 1.1em;
+        }
+    }
+
+    .footer__nav {
+        display: flex;
+        justify-content: center;
+
+        .footer__social-list {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+
+            .footer__social-item {
+                .social-link img {
+                    width: 30px;
+                    height: 30px;
+                    transition: transform 0.3s ease;
+                }
+
+                .social-link:hover img {
+                    transform: scale(1.2);
+                }
+            }
+        }
+    }
+}
+
+// Адаптивность для мобильных устройств
+@media (max-width: 768px) {
+    .modal-body {
+        padding: 1.5rem 3rem;
+        
+        .arrow-btn {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .arrow-prev {
+            left: 0.5rem;
+        }
+        
+        .arrow-next {
+            right: 0.5rem;
+        }
+    }
+}

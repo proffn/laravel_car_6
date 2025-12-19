@@ -121,6 +121,9 @@
                                     <span class="badge bg-danger float-end">{{ Auth::user()->pendingFriendRequestsCount() }}</span>
                                 @endif
                             </a>
+                            <a class="dropdown-item" href="{{ route('profile.tokens') }}">
+                                <i class="fas fa-key me-2"></i>API Токены
+                            </a>
                             <div class="dropdown-divider"></div>
                             <form method="POST" action="{{ route('logout') }}" class="dropdown-item">
                                 @csrf

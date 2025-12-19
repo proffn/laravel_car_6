@@ -6,11 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens; 
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable; 
 
     protected $fillable = [
         'name',
@@ -59,7 +59,7 @@ class User extends Authenticatable
     public function friends()
     {
         return $this->belongsToMany(User::class, 'friendships', 'user_id', 'friend_id')
-            ->wherePivot('status', Friendship::STATUS_ACCEPTED)
+            ->wherePivot('status', \App\Models\Friendship::STATUS_ACCEPTED)
             ->withTimestamps();
     }
 
@@ -67,7 +67,7 @@ class User extends Authenticatable
     public function friendOf()
     {
         return $this->belongsToMany(User::class, 'friendships', 'friend_id', 'user_id')
-            ->wherePivot('status', Friendship::STATUS_ACCEPTED)
+            ->wherePivot('status', \App\Models\Friendship::STATUS_ACCEPTED)
             ->withTimestamps();
     }
 
@@ -93,7 +93,7 @@ class User extends Authenticatable
     public function pendingFriendRequestsCount()
     {
         return $this->receivedFriendRequests()
-            ->where('status', Friendship::STATUS_PENDING)
+            ->where('status', \App\Models\Friendship::STATUS_PENDING)
             ->count();
     }
 
@@ -104,7 +104,7 @@ class User extends Authenticatable
         
         return $this->receivedFriendRequests()
             ->where('user_id', $user->id)
-            ->where('status', Friendship::STATUS_PENDING)
+            ->where('status', \App\Models\Friendship::STATUS_PENDING)
             ->exists();
     }
 
@@ -115,7 +115,7 @@ class User extends Authenticatable
         
         return $this->sentFriendRequests()
             ->where('friend_id', $user->id)
-            ->where('status', Friendship::STATUS_PENDING)
+            ->where('status', \App\Models\Friendship::STATUS_PENDING)
             ->exists();
     }
 
@@ -132,7 +132,7 @@ class User extends Authenticatable
     {
         $friendIds = $this->allFriends()->pluck('id');
         
-        return Car::whereIn('user_id', $friendIds)
+        return \App\Models\Car::whereIn('user_id', $friendIds)
             ->with(['user', 'comments'])
             ->latest()
             ->limit($limit)
@@ -143,7 +143,7 @@ class User extends Authenticatable
     public function pendingFriendRequests()
     {
         return $this->receivedFriendRequests()
-            ->where('status', Friendship::STATUS_PENDING)
+            ->where('status', \App\Models\Friendship::STATUS_PENDING)
             ->with('user')
             ->get();
     }

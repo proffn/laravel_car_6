@@ -55,3 +55,18 @@ Route::prefix('friends')->name('friends.')->middleware('auth')->group(function (
 
 // Лента друзей
 Route::get('/feed', [FeedController::class, 'index'])->middleware('auth')->name('feed');
+
+// Веб-страница с токенами 
+use App\Http\Controllers\WebTokenController;
+
+Route::get('/profile/tokens', [WebTokenController::class, 'index'])
+    ->middleware('auth')
+    ->name('profile.tokens');
+
+Route::post('/profile/tokens/create', [WebTokenController::class, 'createToken'])
+    ->middleware('auth')
+    ->name('profile.tokens.create');
+
+Route::delete('/profile/tokens/{id}', [WebTokenController::class, 'deleteToken'])
+    ->middleware('auth')
+    ->name('profile.tokens.delete');
